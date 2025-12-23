@@ -39,6 +39,25 @@ def is_hex_byte(token):
     )
 
 
+def extract_instruction_data(tokens):
+    instruction = []
+    for token in tokens:
+        if token.endswith(":"):
+            continue
+
+        if is_hex_byte(token):
+            instruction.append(int(token, 16))
+        else:
+            break
+
+    if instruction and instruction[0] == 0:
+        assert all(code == 0 for code in instruction)
+    else:
+        assert len(instruction) <= 2
+
+    return instruction
+
+
 data = []
 for line in lines:
     tokens = line.split()
@@ -50,12 +69,8 @@ for line in lines:
         print(f"for line\n\t{line}")
         raise ValueError()
 
-    instruction = []
-    for token in tokens[1:]:
-        print(f"processing: {token}")
-        if not is_hex_byte(token):
-            break
-        instruction.append(int(token, 16))
-
+    instruction = extract_instruction_data(tokens[1:])
     print(f"instruction: {ints_to_hexstr(instruction)}")
     data.extend(instruction)
+
+assert len(data) == 0x500

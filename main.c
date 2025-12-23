@@ -22,10 +22,16 @@
 #define DEMUX_U12(ms, mid, ls) \
     ((uint16_t)(((ms) & 0xF) << 8) | (((mid) & 0xF) << 4) | ((ls) & 0xF))
 
+#define FLAG_CARRY (1 << 0)
+#define FLAG_TEST  (1 << 1)
+
+#define IS_SET(status, flag) (!!((status) & (flag)))
+
 typedef struct {
     uint64_t registers;
     uint16_t pc;
     uint16_t sp[3];
+    uint8_t status;
 } Intel4004;
 
 int main(void)

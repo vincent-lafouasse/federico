@@ -74,3 +74,5 @@ for line in lines:
     data.extend(instruction)
 
 assert len(data) == 0x500
+with open("busicom.bin", "wb") as f:
+    f.write(bytes(data))

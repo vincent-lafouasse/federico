@@ -28,6 +28,7 @@ def ints_to_hexstr(numbers):
     for i in numbers:
         out += f"0x{i:02x}, "
     out += "]"
+    return out
 
 
 def is_hex_byte(token):
@@ -57,4 +58,4 @@ for line in lines:
         instruction.append(int(token, 16))
 
     print(f"instruction: {ints_to_hexstr(instruction)}")
-    data.append(instruction)
+    data.extend(instruction)

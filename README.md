@@ -1,6 +1,6 @@
 # federico - a 4004 calculator
 
-thank you Fairchildren
+thank you Fairchildren. It's hard to honor the Eight without doing solid state physics so this will do 
 
 ## references
 

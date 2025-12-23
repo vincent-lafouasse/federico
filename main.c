@@ -16,6 +16,12 @@
     ((regs) = ((regs) & ~(0xFFULL << ((i) << 3))) | \
               (((uint64_t)(val) & 0xFF) << ((i) << 3)))
 
+// ls: least significant nibble (bits 0-3)
+// mid: middle nibble (bits 4-7)
+// ms: most significant nibble (bits 8-11)
+#define DEMUX_U12(ms, mid, ls) \
+    ((uint16_t)(((ms) & 0xF) << 8) | (((mid) & 0xF) << 4) | ((ls) & 0xF))
+
 typedef struct {
     uint64_t registers;
     uint16_t pc;

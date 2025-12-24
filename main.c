@@ -1,4 +1,5 @@
 #include <assert.h>
+#include <stdalign.h>
 #include <stddef.h>
 #include <stdint.h>
 
@@ -31,12 +32,12 @@ typedef struct {
     uint8_t status;
 } Intel4004;
 
-const uint8_t program[] = {
+alignas(64) const uint8_t program[] = {
 #include "./firmware/busicom.inc"
 };
-const size_t sz = sizeof(program);
+const size_t programSz = sizeof(program);
 
 int main(void)
 {
-    assert(sz == 0x500);
+    assert(programSz == 0x500);
 }

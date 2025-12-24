@@ -28,9 +28,9 @@
 #define IS_SET(status, flag) (!!((status) & (flag)))
 
 typedef struct {
-    uint64_t registers;
+    uint64_t registers; // 16 4-bit words, sometimes addressed as pairs
     uint16_t pc;
-    uint16_t sp[3];
+    uint16_t sp[3];     // maximum stack depth of 3
     uint8_t status;
 } Intel4004;
 

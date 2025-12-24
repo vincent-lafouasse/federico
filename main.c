@@ -1,9 +1,6 @@
 #include <assert.h>
+#include <stddef.h>
 #include <stdint.h>
-#include <sys/fcntl.h>
-#include <unistd.h>
-
-#define FIRMWARE_PATH "./firmware/busicom.bin"
 
 #define GET_REG4(regs, i) (((regs) >> ((i) << 2)) & 0xF)
 #define SET_REG4(regs, i, val)                     \
@@ -23,23 +20,23 @@
     ((uint16_t)(((ms) & 0xF) << 8) | (((mid) & 0xF) << 4) | ((ls) & 0xF))
 
 #define FLAG_CARRY (1 << 0)
-#define FLAG_TEST  (1 << 1)
+#define FLAG_TEST (1 << 1)
 
 #define IS_SET(status, flag) (!!((status) & (flag)))
 
 typedef struct {
-    uint64_t registers; // 16 4-bit words, sometimes addressed as pairs
+    uint64_t registers;  // 16 4-bit words, sometimes addressed as pairs
     uint16_t pc;
-    uint16_t sp[3];     // maximum stack depth of 3
+    uint16_t sp[3];  // maximum stack depth of 3
     uint8_t status;
 } Intel4004;
 
+const uint8_t program[] = {
+#include "./firmware/busicom.inc"
+};
+const size_t sz = sizeof(program);
+
 int main(void)
 {
-    int fd = open(FIRMWARE_PATH, O_RDONLY);
-    uint8_t program[0x500];
-    int sz = read(fd, program, 0x500);
-    close(fd);
-
     assert(sz == 0x500);
 }

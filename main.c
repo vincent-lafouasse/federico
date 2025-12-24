@@ -2,6 +2,7 @@
 #include <stdalign.h>
 #include <stddef.h>
 #include <stdint.h>
+#include <stdio.h>
 
 #define GET_REG4(regs, i) (((regs) >> ((i) << 2)) & 0xF)
 #define SET_REG4(regs, i, val)                     \
@@ -32,6 +33,16 @@ typedef struct {
     uint8_t status;
 } Intel4004;
 
+void inspect_layout(Intel4004 *c) {
+    uintptr_t base = (uintptr_t)c;
+    printf("Base Address (aligned?): %p\n", (void*)c);
+    printf("Registers:   +%lu bytes\n", (uintptr_t)&c->registers - base);
+    printf("PC:          +%lu bytes\n", (uintptr_t)&c->pc - base);
+    printf("Stack[0]:    +%lu bytes\n", (uintptr_t)&c->sp[0] - base);
+    printf("Status:      +%lu bytes\n", (uintptr_t)&c->status - base);
+    // printf("Accumulator: +%lu bytes\n", (uintptr_t)&c->accumulator - base);
+}
+
 alignas(64) const uint8_t program[] = {
 #include "./firmware/busicom.inc"
 };
@@ -40,4 +51,7 @@ const size_t programSz = sizeof(program);
 int main(void)
 {
     assert(programSz == 0x500);
+
+    alignas(64) Intel4004 cpu;
+    inspect_layout(&cpu);
 }

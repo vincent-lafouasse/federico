@@ -35,11 +35,12 @@ typedef struct {
 
 void inspect_layout(Intel4004 *c) {
     uintptr_t base = (uintptr_t)c;
-    printf("Base Address (aligned?): %p\n", (void*)c);
-    printf("Registers:   +%lu bytes\n", (uintptr_t)&c->registers - base);
-    printf("PC:          +%lu bytes\n", (uintptr_t)&c->pc - base);
-    printf("Stack[0]:    +%lu bytes\n", (uintptr_t)&c->sp[0] - base);
-    printf("Status:      +%lu bytes\n", (uintptr_t)&c->status - base);
+    printf("Base Address:    %p\n", (void*)c);
+    printf("Aligned?:        %s\n", base % 64 == 0 ? "yes" : "no");
+    printf("Registers:       +%lu bytes\n", (uintptr_t)&c->registers - base);
+    printf("PC:              +%lu bytes\n", (uintptr_t)&c->pc - base);
+    printf("Stack[0]:        +%lu bytes\n", (uintptr_t)&c->sp[0] - base);
+    printf("Status:          +%lu bytes\n", (uintptr_t)&c->status - base);
     // printf("Accumulator: +%lu bytes\n", (uintptr_t)&c->accumulator - base);
 }
 

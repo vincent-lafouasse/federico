@@ -63,11 +63,16 @@ void unimplemented(uint8_t opr, uint8_t opa)
     exit(1);
 }
 
-void cpu_tick(Intel4004* cpu, const uint8_t* program)
+uint8_t cpu_fetch(Intel4004* cpu, const uint8_t* program)
 {
     const uint8_t instruction = program[cpu->pc & 0xfff];
     cpu->pc = (cpu->pc + 1) & 0xfff;
+    return instruction;
+}
 
+void cpu_tick(Intel4004* cpu, const uint8_t* program)
+{
+    const uint8_t instruction = cpu_fetch(cpu, program);
     const uint8_t opr = (instruction >> 4) & 0xf;
     const uint8_t opa = instruction & 0xf;
 

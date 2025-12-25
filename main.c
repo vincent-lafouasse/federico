@@ -70,8 +70,6 @@ void cpu_tick(Intel4004* cpu)
     const uint8_t opa = instruction & 0xf;
 
     switch (opr) {
-        case 0x0: // NOP
-            unimplemented(opr, opa);
         case 0x1: // JCN
             unimplemented(opr, opa);
         case 0x2: // FIM/SRC
@@ -100,8 +98,10 @@ void cpu_tick(Intel4004* cpu)
             unimplemented(opr, opa);
         case 0xf: // accumulator group instructions
             unimplemented(opr, opa);
+        case 0x0: // NOP
         case 0xa: // undocumented
         default:
+            cpu->pc += 1;
             break;
     }
 }

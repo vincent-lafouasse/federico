@@ -107,7 +107,8 @@ void cpu_tick(Intel4004* cpu, const uint8_t* program)
     }
 }
 
-alignas(64) const uint8_t program[] = {
+// max 16 4001 banks, each with a cap of 0x100
+alignas(64) const uint8_t program[0x1000] = {
 #include "./firmware/busicom.inc"
 };
 const size_t programSz = sizeof(program);

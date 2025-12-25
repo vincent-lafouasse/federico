@@ -111,12 +111,9 @@ void cpu_tick(Intel4004* cpu, const uint8_t* program)
 alignas(64) const uint8_t program[0x1000] = {
 #include "./firmware/busicom.inc"
 };
-const size_t programSz = sizeof(program);
 
 int main(void)
 {
-    assert(programSz == 0x500);
-
     alignas(64) Intel4004 cpu;
     inspect_layout(&cpu);
 }

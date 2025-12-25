@@ -1,9 +1,9 @@
 #include <assert.h>
 #include <stdalign.h>
 #include <stddef.h>
-#include <stdlib.h>
 #include <stdint.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 #define GET_REG4(regs, i) (((regs) >> ((i) << 2)) & 0xF)
 #define SET_REG4(regs, i, val)                     \
@@ -73,36 +73,36 @@ void cpu_tick(Intel4004* cpu, const uint8_t* program)
     const uint8_t opa = instruction & 0xf;
 
     switch (opr) {
-        case 0x1: // JCN
+        case 0x1:  // JCN
             unimplemented(opr, opa);
-        case 0x2: // FIM/SRC
+        case 0x2:  // FIM/SRC
             unimplemented(opr, opa);
-        case 0x3: // FIN/JIN
+        case 0x3:  // FIN/JIN
             unimplemented(opr, opa);
-        case 0x4: // JUN
+        case 0x4:  // JUN
             unimplemented(opr, opa);
-        case 0x5: // JMX
+        case 0x5:  // JMX
             unimplemented(opr, opa);
-        case 0x6: // INC
+        case 0x6:  // INC
             unimplemented(opr, opa);
-        case 0x7: // ISZ
+        case 0x7:  // ISZ
             unimplemented(opr, opa);
-        case 0x8: // ADD
+        case 0x8:  // ADD
             unimplemented(opr, opa);
-        case 0x9: // SUB
+        case 0x9:  // SUB
             unimplemented(opr, opa);
-        case 0xb: // LD/XCH
+        case 0xb:  // LD/XCH
             unimplemented(opr, opa);
-        case 0xc: // BBL
+        case 0xc:  // BBL
             unimplemented(opr, opa);
-        case 0xd: // LDM
+        case 0xd:  // LDM
             unimplemented(opr, opa);
-        case 0xe: // IO and RAM instructions
+        case 0xe:  // IO and RAM instructions
             unimplemented(opr, opa);
-        case 0xf: // accumulator group instructions
+        case 0xf:  // accumulator group instructions
             unimplemented(opr, opa);
-        case 0x0: // NOP
-        case 0xa: // undocumented
+        case 0x0:  // NOP
+        case 0xa:  // undocumented
         default:
             break;
     }

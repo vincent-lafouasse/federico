@@ -101,7 +101,6 @@ void cpu_tick(Intel4004* cpu, const uint8_t* program)
             break;
         }
         case 0x2: {  // FIM/SRC
-            const uint8_t value = cpu_fetch(cpu, program);
             const uint8_t reg = (opa >> 1) & 0x3;  // RRR_
 
             if (opa & 0x1) {
@@ -109,6 +108,7 @@ void cpu_tick(Intel4004* cpu, const uint8_t* program)
                 unimplemented(opr, opa);
             } else {
                 // FIM
+                const uint8_t value = cpu_fetch(cpu, program);
                 unimplemented(opr, opa);
             }
 

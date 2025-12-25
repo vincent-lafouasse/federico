@@ -100,8 +100,20 @@ void cpu_tick(Intel4004* cpu, const uint8_t* program)
             }
             break;
         }
-        case 0x2:  // FIM/SRC
-            unimplemented(opr, opa);
+        case 0x2: {  // FIM/SRC
+            const uint8_t value = cpu_fetch(cpu, program);
+            const uint8_t reg = (opa >> 1) & 0x3;  // RRR_
+
+            if (opa & 0x1) {
+                // SRC
+                unimplemented(opr, opa);
+            } else {
+                // FIM
+                unimplemented(opr, opa);
+            }
+
+            break;
+        }
         case 0x3:  // FIN/JIN
             unimplemented(opr, opa);
         case 0x4:  // JUN

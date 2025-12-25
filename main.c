@@ -29,8 +29,9 @@
 typedef struct {
     uint64_t registers;  // 16 4-bit words, sometimes addressed as pairs
     uint16_t pc;
-    uint16_t sp[3];  // maximum stack depth of 3
+    uint8_t accumulator;
     uint8_t status;
+    uint16_t sp[3];  // maximum stack depth of 3
 } Intel4004;
 
 #define INSPECT_FIELD(base_ptr, field)                                      \
@@ -50,8 +51,9 @@ void inspect_layout(Intel4004* cpu)
     printf("\nFields:\n");
     INSPECT_FIELD(cpu, registers);
     INSPECT_FIELD(cpu, pc);
-    INSPECT_FIELD(cpu, sp);
+    INSPECT_FIELD(cpu, accumulator);
     INSPECT_FIELD(cpu, status);
+    INSPECT_FIELD(cpu, sp);
 }
 
 alignas(64) const uint8_t program[] = {

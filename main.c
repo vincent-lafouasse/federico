@@ -63,9 +63,12 @@ void unimplemented(uint8_t opr, uint8_t opa)
     exit(1);
 }
 
-void cpu_tick(Intel4004* cpu)
+void cpu_tick(Intel4004* cpu, const uint8_t* program)
 {
-    const uint8_t instruction = 0xca;
+    cpu->pc = cpu->pc & 0xfff;
+    const uint8_t instruction = program[cpu->pc];
+    cpu->pc = (cpu->pc + 1) & 0xfff;
+
     const uint8_t opr = (instruction >> 4) & 0xf;
     const uint8_t opa = instruction & 0xf;
 
@@ -101,7 +104,6 @@ void cpu_tick(Intel4004* cpu)
         case 0x0: // NOP
         case 0xa: // undocumented
         default:
-            cpu->pc += 1;
             break;
     }
 }

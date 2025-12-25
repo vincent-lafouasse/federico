@@ -28,7 +28,7 @@
 #define IS_SET(status, flag) (!!((status) & (flag)))
 
 typedef struct {
-    uint64_t registers;  // 16 4-bit words, sometimes addressed as pairs
+    uint64_t registers;  // 16 4-bit words, sometimes as pairs eax/rax style
     uint16_t pc;
     uint8_t accumulator;
     uint8_t status;

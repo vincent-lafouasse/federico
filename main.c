@@ -91,8 +91,15 @@ void cpu_tick(Intel4004* cpu, const uint8_t* program)
     const uint8_t opa = instruction & 0xf;
 
     switch (opr) {
-        case 0x1:  // JCN
-            unimplemented(opr, opa);
+        case 0x1: {  // JCN
+            const uint8_t address = cpu_fetch(cpu, program);
+            const bool cond = jcn_condition(cpu, opa);
+            if (cond) {
+                cpu->pc = cpu->pc & ~(0xff);
+                cpu->pc = (cpu->pc | address) & 0xfff;
+            }
+            break;
+        }
         case 0x2:  // FIM/SRC
             unimplemented(opr, opa);
         case 0x3:  // FIN/JIN

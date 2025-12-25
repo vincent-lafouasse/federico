@@ -65,8 +65,7 @@ void unimplemented(uint8_t opr, uint8_t opa)
 
 void cpu_tick(Intel4004* cpu, const uint8_t* program)
 {
-    cpu->pc = cpu->pc & 0xfff;
-    const uint8_t instruction = program[cpu->pc];
+    const uint8_t instruction = program[cpu->pc & 0xfff];
     cpu->pc = (cpu->pc + 1) & 0xfff;
 
     const uint8_t opr = (instruction >> 4) & 0xf;

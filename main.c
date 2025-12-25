@@ -1,5 +1,6 @@
 #include <assert.h>
 #include <stdalign.h>
+#include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -68,6 +69,19 @@ uint8_t cpu_fetch(Intel4004* cpu, const uint8_t* program)
     const uint8_t instruction = program[cpu->pc & 0xfff];
     cpu->pc = (cpu->pc + 1) & 0xfff;
     return instruction;
+}
+
+bool jcn_condition(const Intel4004* cpu, uint8_t opa)
+{
+    const bool testCheck =
+        ((opa >> 0) & 0x1) && !IS_SET(cpu->status, FLAG_TEST);
+    const bool carryCheck =
+        ((opa >> 1) & 0x1) && IS_SET(cpu->status, FLAG_CARRY);
+    const bool accumulatorCheck = ((opa >> 2) & 0x1) && (cpu->accumulator == 0);
+    const bool invert = (opa >> 3) & 0x1;
+
+    const bool combined = accumulatorCheck || carryCheck || testCheck;
+    return invert ? !combined : combined;
 }
 
 void cpu_tick(Intel4004* cpu, const uint8_t* program)

@@ -33,13 +33,16 @@ typedef struct {
     uint8_t status;
 } Intel4004;
 
-#define INSPECT_FIELD(base_ptr, field) do { \
-    ptrdiff_t offset = (char*)&(base_ptr->field) - (char*)base_ptr; \
-    size_t size = sizeof(base_ptr->field); \
-    printf("%-12s | Offset: +%2td | Size: %zu bytes\n", #field, offset, size); \
-} while(0)
+#define INSPECT_FIELD(base_ptr, field)                                      \
+    do {                                                                    \
+        ptrdiff_t offset = (char*)&(base_ptr->field) - (char*)base_ptr;     \
+        size_t size = sizeof(base_ptr->field);                              \
+        printf("%-12s | Offset: +%2td | Size: %zu bytes\n", #field, offset, \
+               size);                                                       \
+    } while (0)
 
-void inspect_layout(Intel4004* cpu) {
+void inspect_layout(Intel4004* cpu)
+{
     printf("Base Address:    %p\n", cpu);
     printf("Size:            %zu bytes\n", sizeof(*cpu));
     printf("Aligned?:        %s\n", (uintptr_t)cpu % 64 == 0 ? "yes" : "no");

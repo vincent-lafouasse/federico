@@ -33,15 +33,22 @@ typedef struct {
     uint8_t status;
 } Intel4004;
 
-void inspect_layout(Intel4004 *c) {
-    uintptr_t base = (uintptr_t)c;
-    printf("Base Address:    %p\n", (void*)c);
-    printf("Aligned?:        %s\n", base % 64 == 0 ? "yes" : "no");
-    printf("Registers:       +%lu bytes\n", (uintptr_t)&c->registers - base);
-    printf("PC:              +%lu bytes\n", (uintptr_t)&c->pc - base);
-    printf("Stack[0]:        +%lu bytes\n", (uintptr_t)&c->sp[0] - base);
-    printf("Status:          +%lu bytes\n", (uintptr_t)&c->status - base);
-    // printf("Accumulator: +%lu bytes\n", (uintptr_t)&c->accumulator - base);
+#define INSPECT_FIELD(base_ptr, field) do { \
+    ptrdiff_t offset = (char*)&(base_ptr->field) - (char*)base_ptr; \
+    size_t size = sizeof(base_ptr->field); \
+    printf("%-12s | Offset: +%2td | Size: %zu bytes\n", #field, offset, size); \
+} while(0)
+
+void inspect_layout(Intel4004* cpu) {
+    printf("Base Address:    %p\n", cpu);
+    printf("Size:            %zu bytes\n", sizeof(*cpu));
+    printf("Aligned?:        %s\n", (uintptr_t)cpu % 64 == 0 ? "yes" : "no");
+
+    printf("\nFields:\n");
+    INSPECT_FIELD(cpu, registers);
+    INSPECT_FIELD(cpu, pc);
+    INSPECT_FIELD(cpu, sp);
+    INSPECT_FIELD(cpu, status);
 }
 
 alignas(64) const uint8_t program[] = {

@@ -1,6 +1,7 @@
 #include <assert.h>
 #include <stdalign.h>
 #include <stddef.h>
+#include <stdlib.h>
 #include <stdint.h>
 #include <stdio.h>
 
@@ -56,6 +57,12 @@ void inspect_layout(Intel4004* cpu)
     INSPECT_FIELD(cpu, sp);
 }
 
+void unimplemented(uint8_t opr, uint8_t opa)
+{
+    printf("unimplemented: %02x %02x\n", opr, opa);
+    exit(1);
+}
+
 void cpu_tick(Intel4004* cpu)
 {
     const uint8_t instruction = 0xca;
@@ -64,21 +71,36 @@ void cpu_tick(Intel4004* cpu)
 
     switch (opr) {
         case 0x0: // NOP
+            unimplemented(opr, opa);
         case 0x1: // JCN
+            unimplemented(opr, opa);
         case 0x2: // FIM/SRC
+            unimplemented(opr, opa);
         case 0x3: // FIN/JIN
+            unimplemented(opr, opa);
         case 0x4: // JUN
+            unimplemented(opr, opa);
         case 0x5: // JMX
+            unimplemented(opr, opa);
         case 0x6: // INC
+            unimplemented(opr, opa);
         case 0x7: // ISZ
+            unimplemented(opr, opa);
         case 0x8: // ADD
+            unimplemented(opr, opa);
         case 0x9: // SUB
-        case 0xa: // undocumented
+            unimplemented(opr, opa);
         case 0xb: // LD/XCH
+            unimplemented(opr, opa);
         case 0xc: // BBL
+            unimplemented(opr, opa);
         case 0xd: // LDM
+            unimplemented(opr, opa);
         case 0xe: // IO and RAM instructions
+            unimplemented(opr, opa);
         case 0xf: // accumulator group instructions
+            unimplemented(opr, opa);
+        case 0xa: // undocumented
         default:
             break;
     }

@@ -142,7 +142,10 @@ void cpu_tick(Intel4004* cpu, const uint8_t* program)
             unimplemented(opr, opa);
         // 0b0110
         case 0x6:  // INC
-            unimplemented(opr, opa);
+            // SET_REG4 already takes care of the overflow
+            // it masks with 0xf before setting. no carry
+            SET_REG4(cpu->registers, opa, GET_REG4(cpu->registers, opa) + 1);
+            break;
         // 0b0111
         case 0x7:  // ISZ
             unimplemented(opr, opa);

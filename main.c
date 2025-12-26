@@ -147,8 +147,13 @@ void cpu_tick(Intel4004* cpu, const uint8_t* program)
         case 0x7:  // ISZ
             unimplemented(opr, opa);
         // 0b1000
-        case 0x8:  // ADD
-            unimplemented(opr, opa);
+        case 0x8: {  // ADD
+            cpu->accumulator +=
+                GET_REG4(cpu->registers, opa) + IS_SET(cpu->status, FLAG_CARRY);
+            SET_FLAG_BOOL(cpu->status, FLAG_CARRY, cpu->accumulator > 0xf);
+            cpu->accumulator = cpu->accumulator & 0xf;
+            break;
+        }
         // 0b1001
         case 0x9:  // SUB
             unimplemented(opr, opa);

@@ -96,6 +96,19 @@ uint16_t* cpu_pc(Intel4004* cpu)
     return cpu->pc_bank + (cpu->pc_depth & 0x3);
 }
 
+void cpu_pc_push(Intel4004* cpu, uint16_t addr)
+{
+    cpu->pc_depth = (cpu->pc_depth + 1) & 0x3;
+    *cpu_pc(cpu) = addr & 0xFFF;
+}
+
+void cpu_pc_pop(Intel4004* cpu)
+{
+    // safe -1 using modular arithmetic
+    // popping past 0 is bad but expected behavior
+    cpu->pc_depth = (cpu->pc_depth + 3) & 0x3;
+}
+
 uint8_t cpu_fetch(Intel4004* cpu, const uint8_t* program)
 {
     uint16_t* active_pc = cpu_pc(cpu);

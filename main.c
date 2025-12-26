@@ -11,11 +11,14 @@
     ((regs) = ((regs) & ~(0xFULL << ((i) << 2))) | \
               (((uint64_t)(val) & 0xF) << ((i) << 2)))
 
-#define GET_REG8(regs, i) (((regs) >> ((i) << 3)) & 0xFF)
+#define GET_REG8(regs, i) \
+    ((GET_REG4(regs, 2 * i) << 4) | GET_REG4(regs, 2 * i + 1))
 
-#define SET_REG8(regs, i, val)                      \
-    ((regs) = ((regs) & ~(0xFFULL << ((i) << 3))) | \
-              (((uint64_t)(val) & 0xFF) << ((i) << 3)))
+#define SET_REG8(regs, i, val)                   \
+    do {                                         \
+        SET_REG4(regs, 2 * i, (val >> 4) & 0xf); \
+        SET_REG4(regs, 2 * i + 1, val & 0xf);    \
+    } while (0)
 
 // ls: least significant nibble (bits 0-3)
 // mid: middle nibble (bits 4-7)

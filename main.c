@@ -185,7 +185,9 @@ void cpu_tick(Intel4004* cpu, const uint8_t* program)
         }
         // 0b0100
         case 0x4:  // JUN
-            unimplemented(opr, opa);
+            *cpu_pc(cpu) =
+                ((uint16_t)(opa & 0xF) << 8 | cpu_fetch(cpu, program)) & 0xFFF;
+            break;
         // 0b0101
         case 0x5:  // JMS
             unimplemented(opr, opa);

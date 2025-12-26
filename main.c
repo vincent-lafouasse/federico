@@ -118,11 +118,10 @@ void cpu_tick(Intel4004* cpu, const uint8_t* program)
                 // SRC
                 unimplemented(opr, opa);
             } else {
-                // FIM
+                // FIM: fetch imm., ROM value directly into regs
                 const uint8_t value = cpu_fetch(cpu, program);
-                unimplemented(opr, opa);
+                SET_REG8(cpu->registers, reg, value);
             }
-
             break;
         }
         case 0x3:  // FIN/JIN

@@ -52,6 +52,17 @@ typedef struct {
     uint16_t sp[3];  // maximum stack depth of 3
 } Intel4004;
 
+Intel4004 cpu_init(void)
+{
+    return (Intel4004){
+        .registers = 0,
+        .pc = 0,
+        .accumulator = 0,
+        .status = 0,
+        .sp = {0},
+    };
+}
+
 #define INSPECT_FIELD(base_ptr, field)                                      \
     do {                                                                    \
         ptrdiff_t offset = (char*)&(base_ptr->field) - (char*)base_ptr;     \
@@ -201,6 +212,6 @@ alignas(64) const uint8_t programROM[0x1000] = {
 
 int main(void)
 {
-    alignas(64) Intel4004 cpu;
+    alignas(64) Intel4004 cpu = cpu_init();
     inspect_layout(&cpu);
 }

@@ -209,7 +209,9 @@ void cpu_tick(Intel4004* cpu, const uint8_t* program)
         }
         // 0b1100
         case 0xc:  // BBL
-            unimplemented(opr, opa);
+            cpu->accumulator = opa & 0xf;
+            cpu_pc_pop(cpu);
+            break;
         // 0b1101
         case 0xd:  // LDM
             cpu->accumulator = opa & 0xf;

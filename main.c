@@ -46,20 +46,20 @@
 
 typedef struct {
     uint64_t registers;  // 16 4-bit words, sometimes as pairs eax/rax style
-    uint16_t pc;
+    uint16_t pc_bank[4];
+    uint8_t pc_depth;
     uint8_t accumulator;
     uint8_t status;  // see FLAG_* macros
-    uint16_t sp[3];  // maximum stack depth of 3
 } Intel4004;
 
 Intel4004 cpu_init(void)
 {
     return (Intel4004){
         .registers = 0,
-        .pc = 0,
+        .pc_bank = {0},
+        .pc_depth = 0,
         .accumulator = 0,
         .status = 0,
-        .sp = {0},
     };
 }
 
@@ -79,10 +79,10 @@ void inspect_layout(Intel4004* cpu)
 
     printf("\nFields:\n");
     INSPECT_FIELD(cpu, registers);
-    INSPECT_FIELD(cpu, pc);
+    INSPECT_FIELD(cpu, pc_bank);
+    INSPECT_FIELD(cpu, pc_depth);
     INSPECT_FIELD(cpu, accumulator);
     INSPECT_FIELD(cpu, status);
-    INSPECT_FIELD(cpu, sp);
 }
 
 void unimplemented(uint8_t opr, uint8_t opa)
@@ -91,10 +91,16 @@ void unimplemented(uint8_t opr, uint8_t opa)
     exit(1);
 }
 
+uint16_t* cpu_pc(Intel4004* cpu)
+{
+    return cpu->pc_bank + (cpu->pc_depth & 0x3);
+}
+
 uint8_t cpu_fetch(Intel4004* cpu, const uint8_t* program)
 {
-    const uint8_t instruction = program[cpu->pc & 0xfff];
-    cpu->pc = (cpu->pc + 1) & 0xfff;
+    uint16_t* active_pc = cpu_pc(cpu);
+    const uint8_t instruction = program[*active_pc & 0xfff];
+    *active_pc = (*active_pc + 1) & 0xfff;
     return instruction;
 }
 
@@ -123,8 +129,10 @@ void cpu_tick(Intel4004* cpu, const uint8_t* program)
             const uint8_t address = cpu_fetch(cpu, program);
             const bool cond = jcn_condition(cpu, opa);
             if (cond) {
-                cpu->pc = cpu->pc & ~(0xff);
-                cpu->pc = (cpu->pc | address) & 0xfff;
+                uint16_t* pc = cpu_pc(cpu);
+                *pc &= ~(0xff);
+                *pc |= address;
+                *pc &= 0xfff;
             }
             break;
         }

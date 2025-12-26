@@ -164,8 +164,22 @@ void cpu_tick(Intel4004* cpu, const uint8_t* program)
             break;
         }
         // 0b0011
-        case 0x3:  // FIN/JIN
-            unimplemented(opr, opa);
+        case 0x3: {  // FIN/JIN
+            const uint8_t reg = (opa >> 1) & 0x3;
+
+            if (opa & 0x1) {
+                // JIN
+                const uint8_t address = GET_REG8(cpu->registers, reg);
+                uint16_t* pc = cpu_pc(cpu);
+                *pc &= ~(0xff);
+                *pc |= address;
+                *pc &= 0xfff;
+            } else {
+                // FIN
+                unimplemented(opr, opa);
+            }
+            break;
+        }
         // 0b0100
         case 0x4:  // JUN
             unimplemented(opr, opa);

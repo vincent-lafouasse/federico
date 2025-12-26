@@ -102,6 +102,7 @@ void cpu_tick(Intel4004* cpu, const uint8_t* program)
     const uint8_t opa = instruction & 0xf;
 
     switch (opr) {
+        // 0b0001
         case 0x1: {  // JCN
             const uint8_t address = cpu_fetch(cpu, program);
             const bool cond = jcn_condition(cpu, opa);
@@ -111,6 +112,7 @@ void cpu_tick(Intel4004* cpu, const uint8_t* program)
             }
             break;
         }
+        // 0b0010
         case 0x2: {                                // FIM/SRC
             const uint8_t reg = (opa >> 1) & 0x3;  // RRR_
 
@@ -124,29 +126,41 @@ void cpu_tick(Intel4004* cpu, const uint8_t* program)
             }
             break;
         }
+        // 0b0011
         case 0x3:  // FIN/JIN
             unimplemented(opr, opa);
+        // 0b0100
         case 0x4:  // JUN
             unimplemented(opr, opa);
+        // 0b0101
         case 0x5:  // JMX
             unimplemented(opr, opa);
+        // 0b0110
         case 0x6:  // INC
             unimplemented(opr, opa);
+        // 0b0111
         case 0x7:  // ISZ
             unimplemented(opr, opa);
+        // 0b1000
         case 0x8:  // ADD
             unimplemented(opr, opa);
+        // 0b1001
         case 0x9:  // SUB
             unimplemented(opr, opa);
+        // 0b1011
         case 0xb:  // LD/XCH
             unimplemented(opr, opa);
+        // 0b1100
         case 0xc:  // BBL
             unimplemented(opr, opa);
+        // 0b1101
         case 0xd:  // LDM
             cpu->accumulator = opa & 0xf;
             break;
+        // 0b1110
         case 0xe:  // IO and RAM instructions
             unimplemented(opr, opa);
+        // 0b1111
         case 0xf:  // accumulator group instructions
             unimplemented(opr, opa);
         case 0x0:  // NOP

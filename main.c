@@ -23,7 +23,7 @@
 #define DEMUX_U12(ms, mid, ls) \
     ((uint16_t)(((ms) & 0xF) << 8) | (((mid) & 0xF) << 4) | ((ls) & 0xF))
 
-#define FLAG_CARRY (1 << 0) // 1bit register
+#define FLAG_CARRY (1 << 0)  // 1bit register
 // pins to track:
 #define FLAG_TEST (1 << 1)
 // still  unsure if i need to track those pins
@@ -40,7 +40,7 @@ typedef struct {
     uint64_t registers;  // 16 4-bit words, sometimes as pairs eax/rax style
     uint16_t pc;
     uint8_t accumulator;
-    uint8_t status; // see FLAG_* macros
+    uint8_t status;  // see FLAG_* macros
     uint16_t sp[3];  // maximum stack depth of 3
 } Intel4004;
 
@@ -108,7 +108,7 @@ void cpu_tick(Intel4004* cpu, const uint8_t* program)
             }
             break;
         }
-        case 0x2: {  // FIM/SRC
+        case 0x2: {                                // FIM/SRC
             const uint8_t reg = (opa >> 1) & 0x3;  // RRR_
 
             if (opa & 0x1) {

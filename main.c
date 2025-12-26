@@ -149,7 +149,8 @@ void cpu_tick(Intel4004* cpu, const uint8_t* program)
             unimplemented(opr, opa);
         // 0b1010
         case 0xa:  // LD
-            unimplemented(opr, opa);
+            cpu->accumulator = GET_REG4(cpu->registers, opa);
+            break;
         // 0b1011
         case 0xb:  // XCH
             unimplemented(opr, opa);

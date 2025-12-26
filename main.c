@@ -133,7 +133,7 @@ void cpu_tick(Intel4004* cpu, const uint8_t* program)
         case 0x4:  // JUN
             unimplemented(opr, opa);
         // 0b0101
-        case 0x5:  // JMX
+        case 0x5:  // JMS
             unimplemented(opr, opa);
         // 0b0110
         case 0x6:  // INC
@@ -147,8 +147,11 @@ void cpu_tick(Intel4004* cpu, const uint8_t* program)
         // 0b1001
         case 0x9:  // SUB
             unimplemented(opr, opa);
+        // 0b1010
+        case 0xa:  // LD
+            unimplemented(opr, opa);
         // 0b1011
-        case 0xb:  // LD/XCH
+        case 0xb:  // XCH
             unimplemented(opr, opa);
         // 0b1100
         case 0xc:  // BBL
@@ -164,7 +167,6 @@ void cpu_tick(Intel4004* cpu, const uint8_t* program)
         case 0xf:  // accumulator group instructions
             unimplemented(opr, opa);
         case 0x0:  // NOP
-        case 0xa:  // undocumented
         default:
             break;
     }

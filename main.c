@@ -143,7 +143,8 @@ void cpu_tick(Intel4004* cpu, const uint8_t* program)
         case 0xc:  // BBL
             unimplemented(opr, opa);
         case 0xd:  // LDM
-            unimplemented(opr, opa);
+            cpu->accumulator = opa & 0xf;
+            break;
         case 0xe:  // IO and RAM instructions
             unimplemented(opr, opa);
         case 0xf:  // accumulator group instructions

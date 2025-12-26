@@ -38,6 +38,11 @@
 // #define FLAG_UNUSED (1 << 7)
 
 #define IS_SET(status, flag) (!!((status) & (flag)))
+#define SET_FLAG(status, flag) ((status) |= (flag))
+#define UNSET_FLAG(status, flag) ((status) &= ~(flag))
+#define TOGGLE_FLAG(status, flag) ((status) ^= (flag))
+#define SET_FLAG_BOOL(status, flag, truth) \
+    ((truth) ? SET_FLAG(status, flag) : UNSET_FLAG(status, flag))
 
 typedef struct {
     uint64_t registers;  // 16 4-bit words, sometimes as pairs eax/rax style
